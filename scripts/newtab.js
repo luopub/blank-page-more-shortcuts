@@ -93,7 +93,7 @@ class NewTabManager {
             chrome.history.search({
                 text: '',
                 maxResults: 50,
-                startTime: Date.now() - (7 * 24 * 60 * 60 * 1000) // 最近7天
+                startTime: Date.now() - (30 * 24 * 60 * 60 * 1000) // 最近30天
             }, (results) => {
                 if (chrome.runtime.lastError) {
                     reject(new Error(chrome.runtime.lastError.message));
