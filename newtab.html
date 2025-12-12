@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新标签页</title>
+    <link rel="stylesheet" href="styles/newtab.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 设置按钮 -->
+        <div class="settings-container">
+            <button id="settingsBtn" class="settings-btn" title="设置快捷方式格式">
+                ⚙️ 设置
+            </button>
+        </div>
+
+        <!-- 设置面板 -->
+        <div id="settingsPanel" class="settings-panel hidden">
+            <div class="panel-content">
+                <h3>快捷方式设置</h3>
+                <div class="setting-group">
+                    <label for="displayCount">显示数量：</label>
+                    <select id="displayCount">
+                        <option value="4">4个</option>
+                        <option value="6">6个</option>
+                        <option value="8">8个</option>
+                        <option value="10">10个</option>
+                        <option value="12">12个</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="displayFormat">显示格式：</label>
+                    <select id="displayFormat">
+                        <option value="grid">网格布局</option>
+                        <option value="list">列表布局</option>
+                        <option value="card">卡片布局</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="showFavicons">显示网站图标：</label>
+                    <input type="checkbox" id="showFavicons" checked>
+                </div>
+                <div class="setting-actions">
+                    <button id="saveSettings" class="save-btn">保存设置</button>
+                    <button id="cancelSettings" class="cancel-btn">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷方式容器 -->
+        <div id="shortcutsContainer" class="shortcuts-container">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <script src="scripts/newtab.js"></script>
+</body>
+</html>

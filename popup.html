@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快捷方式设置</title>
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <h3>空白页快捷方式设置</h3>
+        <div class="setting-group">
+            <label for="popupDisplayCount">显示数量：</label>
+            <select id="popupDisplayCount">
+                <option value="4">4个</option>
+                <option value="6">6个</option>
+                <option value="8">8个</option>
+                <option value="10">10个</option>
+                <option value="12">12个</option>
+            </select>
+        </div>
+        <div class="setting-group">
+            <label for="popupDisplayFormat">显示格式：</label>
+            <select id="popupDisplayFormat">
+                <option value="grid">网格布局</option>
+                <option value="list">列表布局</option>
+                <option value="card">卡片布局</option>
+            </select>
+        </div>
+        <div class="setting-group">
+            <label for="popupShowFavicons">显示网站图标：</label>
+            <input type="checkbox" id="popupShowFavicons" checked>
+        </div>
+        <button id="savePopupSettings" class="save-btn">保存设置</button>
+        <div id="saveMessage" class="message hidden">设置已保存！</div>
+    </div>
+    <script src="scripts/popup.js"></script>
+</body>
+</html>
