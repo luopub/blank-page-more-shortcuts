@@ -63,16 +63,15 @@ echo Pushing to Gitee...
 git remote get-url gitee >nul 2>&1
 if %errorlevel% neq 0 (
     echo Gitee remote repository not configured, attempting to add...
-    set /p gitee_url="Please enter Gitee repository URL (e.g: https://gitee.com/username/repo.git): "
-    if "!gitee_url!"=="" (
-        echo ERROR: Gitee URL cannot be empty, skipping Gitee push
+    :: Get current directory name as repository name
+    for %%i in ("%cd%") do set repo_name=%%~ni
+    set gitee_url=https://gitee.com/luopub/!repo_name!.git
+    echo Adding Gitee remote: !gitee_url!
+    git remote add gitee !gitee_url!
+    if %errorlevel% equ 0 (
+        echo Gitee remote repository added successfully
     ) else (
-        git remote add gitee !gitee_url!
-        if %errorlevel% equ 0 (
-            echo Gitee remote repository added successfully
-        ) else (
-            echo ERROR: Failed to add Gitee remote repository
-        )
+        echo ERROR: Failed to add Gitee remote repository
     )
 )
 
@@ -93,16 +92,15 @@ echo Pushing to GitHub...
 git remote get-url github >nul 2>&1
 if %errorlevel% neq 0 (
     echo GitHub remote repository not configured, attempting to add...
-    set /p github_url="Please enter GitHub repository URL (e.g: https://github.com/username/repo.git): "
-    if "!github_url!"=="" (
-        echo ERROR: GitHub URL cannot be empty, skipping GitHub push
+    :: Get current directory name as repository name
+    for %%i in ("%cd%") do set repo_name=%%~ni
+    set github_url=https://github.com/luopub/!repo_name!.git
+    echo Adding GitHub remote: !github_url!
+    git remote add github !github_url!
+    if %errorlevel% equ 0 (
+        echo GitHub remote repository added successfully
     ) else (
-        git remote add github !github_url!
-        if %errorlevel% equ 0 (
-            echo GitHub remote repository added successfully
-        ) else (
-            echo ERROR: Failed to add GitHub remote repository
-        )
+        echo ERROR: Failed to add GitHub remote repository
     )
 )
 
