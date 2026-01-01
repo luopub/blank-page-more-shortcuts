@@ -152,14 +152,14 @@ class NewTabManager {
 
     renderShortcuts(shortcuts) {
         const container = document.getElementById('shortcutsContainer');
-        
+
         if (shortcuts.length === 0) {
             container.innerHTML = '<div class="no-shortcuts">暂无快捷方式</div>';
             return;
         }
 
         const shortcutsHTML = shortcuts.map(item => this.createShortcutHTML(item)).join('');
-        
+
         let wrapperClass = '';
         switch (this.settings.displayFormat) {
             case 'grid':
@@ -178,31 +178,90 @@ class NewTabManager {
         // 绑定图片加载事件，实现多级回退
         const favicons = container.querySelectorAll('.favicon-img');
         favicons.forEach(favicon => {
+            const useFetch = favicon.getAttribute('data-use-fetch') === 'true';
+            const faviconUrl = favicon.getAttribute('data-favicon-url');
+
+            // 对于内网地址，使用fetch获取并转换为data URL
+            if (useFetch && faviconUrl) {
+                this.fetchFaviconAsDataURL(favicon, faviconUrl).then(dataUrl => {
+                    if (dataUrl) {
+                        favicon.src = dataUrl;
+                        console.log('图标加载成功 (fetch):', faviconUrl);
+                    } else {
+                        this.tryNextSource(favicon);
+                    }
+                });
+                return;
+            }
+
             favicon.addEventListener('error', (e) => {
-                const sources = JSON.parse(e.target.getAttribute('data-sources') || '[]');
-                const defaultIcon = e.target.getAttribute('data-default');
-                
-                console.log('图标加载失败，当前源:', e.target.src);
-                console.log('剩余备用源:', sources.length);
-                
-                if (sources.length > 0) {
-                    // 尝试下一个备用源
-                    const nextSource = sources.shift();
-                    e.target.setAttribute('data-sources', JSON.stringify(sources));
-                    e.target.src = nextSource;
-                    console.log('尝试备用源:', nextSource);
-                } else if (defaultIcon) {
-                    // 所有源都失败，使用默认字母图标
-                    e.target.src = defaultIcon;
-                    console.log('使用默认图标');
-                }
+                this.tryNextSource(e.target);
             });
-            
-            // 添加加载成功日志
+
             favicon.addEventListener('load', (e) => {
                 console.log('图标加载成功:', e.target.src);
             });
         });
+    }
+
+    async fetchFaviconAsDataURL(imgElement, url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                console.warn('Favicon请求失败:', url, response.status);
+                return null;
+            }
+
+            const blob = await response.blob();
+            const reader = new FileReader();
+            return new Promise((resolve) => {
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.warn('获取favicon失败:', url, error);
+            return null;
+        }
+    }
+
+    tryNextSource(imgElement) {
+        const sources = JSON.parse(imgElement.getAttribute('data-sources') || '[]');
+        const defaultIcon = imgElement.getAttribute('data-default');
+
+        console.log('图标加载失败，当前源:', imgElement.src);
+        console.log('剩余备用源:', sources.length);
+
+        if (sources.length > 0) {
+            const nextSource = sources.shift();
+            imgElement.setAttribute('data-sources', JSON.stringify(sources));
+
+            // 检查下一个源是否也需要使用fetch（内网HTTP地址）
+            try {
+                const urlObj = new URL(nextSource);
+                if (nextSource.startsWith('http://') && this.isPrivateIP(urlObj.hostname)) {
+                    imgElement.setAttribute('data-use-fetch', 'true');
+                    imgElement.setAttribute('data-favicon-url', nextSource);
+                    this.fetchFaviconAsDataURL(imgElement, nextSource).then(dataUrl => {
+                        if (dataUrl) {
+                            imgElement.src = dataUrl;
+                            console.log('图标加载成功 (fetch):', nextSource);
+                        } else {
+                            this.tryNextSource(imgElement);
+                        }
+                    });
+                } else {
+                    imgElement.src = nextSource;
+                    console.log('尝试备用源:', nextSource);
+                }
+            } catch (e) {
+                console.warn('URL解析失败:', nextSource);
+                imgElement.src = nextSource;
+            }
+        } else if (defaultIcon) {
+            imgElement.src = defaultIcon;
+            console.log('使用默认图标');
+        }
     }
 
     createShortcutHTML(item) {
@@ -217,26 +276,47 @@ class NewTabManager {
             `;
         }
 
-        const domain = new URL(item.url).hostname;
+        const urlObj = new URL(item.url);
+        const domain = urlObj.hostname;
+        const protocol = urlObj.protocol;
+        const port = urlObj.port;
+        
         const firstLetter = domain.charAt(0).toUpperCase();
         
         // 生成首字母作为备用图标
         const defaultIcon = this.generateLetterIcon(firstLetter);
         
-        // 多个图标服务源
-        const iconSources = [
+        // 构建正确的favicon基础URL（包含协议和端口）
+        const originBase = `${protocol}//${domain}${port ? ':' + port : ''}`;
+        
+        // 检测是否是内网IP或本地地址
+        const isPrivateIP = this.isPrivateIP(domain);
+        const originalFaviconUrl = `${originBase}/favicon.ico`;
+        
+        // 多个图标服务源 - 内网地址优先使用原始网站，公网地址优先使用第三方服务
+        const iconSources = isPrivateIP ? [
+            originalFaviconUrl,
+            `https://favicon.yandex.net/favicon/${domain}`,
+            `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=32`,
+            `https://icons.duckduckgo.com/ip3/${domain}.ico`
+        ] : [
             `https://favicon.yandex.net/favicon/${domain}`,
             `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=32`,
             `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-            `https://${domain}/favicon.ico`
+            originalFaviconUrl
         ];
+
+        // 对于内网地址，使用fetch绕过CORS
+        const useFetch = isPrivateIP ? 'true' : 'false';
 
         const favicon = `
             <div class="shortcut-favicon favicon-container">
-                <img class="favicon-img" 
-                     src="${iconSources[0]}" 
+                <img class="favicon-img"
+                     src="${useFetch === 'true' ? defaultIcon : iconSources[0]}"
                      data-sources='${JSON.stringify(iconSources.slice(1))}'
                      data-default="${defaultIcon}"
+                     data-use-fetch="${useFetch}"
+                     data-favicon-url="${useFetch === 'true' ? iconSources[0] : ''}"
                      alt=""
                      crossorigin="anonymous">
             </div>
@@ -258,6 +338,32 @@ class NewTabManager {
         const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
         const color = colors[letter.charCodeAt(0) % colors.length];
         return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${color}"/><text x="50%" y="50%" font-size="18" font-family="Arial, sans-serif" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">${letter}</text></svg>`)}`;
+    }
+
+    isPrivateIP(domain) {
+        // 检测是否是内网IP或本地地址
+        if (domain === 'localhost' || domain === '127.0.0.1' || domain === '::1') {
+            return true;
+        }
+        
+        // 检查IPv4内网地址范围
+        const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+        const match = domain.match(ipv4Regex);
+        
+        if (match) {
+            const [, first, second] = match.map(Number);
+            
+            // 10.0.0.0 - 10.255.255.255
+            if (first === 10) return true;
+            
+            // 172.16.0.0 - 172.31.255.255
+            if (first === 172 && second >= 16 && second <= 31) return true;
+            
+            // 192.168.0.0 - 192.168.255.255
+            if (first === 192 && second === 168) return true;
+        }
+        
+        return false;
     }
 
     showMessage(text) {
