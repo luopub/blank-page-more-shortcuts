@@ -5,6 +5,7 @@ class NewTabManager {
             displayFormat: 'grid',
             showFavicons: true
         };
+        this.allShortcuts = [];
         this.init();
     }
 
@@ -46,6 +47,12 @@ class NewTabManager {
         const settingsPanel = document.getElementById('settingsPanel');
         const saveSettingsBtn = document.getElementById('saveSettings');
         const cancelSettingsBtn = document.getElementById('cancelSettings');
+        const searchInput = document.getElementById('searchInput');
+
+        // 搜索框事件监听
+        searchInput.addEventListener('input', (e) => {
+            this.filterShortcuts(e.target.value);
+        });
 
         settingsBtn.addEventListener('click', () => {
             settingsPanel.classList.toggle('hidden');
@@ -74,6 +81,22 @@ class NewTabManager {
         });
     }
 
+    filterShortcuts(searchText) {
+        if (!searchText.trim()) {
+            this.renderShortcuts(this.allShortcuts);
+            return;
+        }
+
+        const lowerSearchText = searchText.toLowerCase();
+        const filteredShortcuts = this.allShortcuts.filter(item => {
+            const title = item.title.toLowerCase();
+            const url = item.url.toLowerCase();
+            return title.includes(lowerSearchText) || url.includes(lowerSearchText);
+        });
+
+        this.renderShortcuts(filteredShortcuts);
+    }
+
     async loadShortcuts() {
         const container = document.getElementById('shortcutsContainer');
         container.innerHTML = '<div class="loading">加载中...</div>';
@@ -83,6 +106,7 @@ class NewTabManager {
             console.log('获取到的历史记录数量:', historyItems.length);
             const shortcuts = this.processHistoryItems(historyItems);
             console.log('处理后的快捷方式数量:', shortcuts.length);
+            this.allShortcuts = shortcuts;
             this.renderShortcuts(shortcuts);
         } catch (error) {
             console.error('加载快捷方式失败:', error);
