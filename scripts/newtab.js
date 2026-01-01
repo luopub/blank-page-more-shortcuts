@@ -292,9 +292,16 @@ class NewTabManager {
         shortcutItems.forEach((item, index) => {
             const shortcutData = shortcuts[index];
             if (shortcutData.pageCount > 1) {
+                // Open history modal when multiple pages exist
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
                     this.openHistoryModal(shortcutData);
+                });
+            } else {
+                // Open page directly when only one page exists
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = shortcutData.url;
                 });
             }
         });
