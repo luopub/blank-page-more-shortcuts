@@ -6,7 +6,7 @@ class NewTabManager {
             showFavicons: true
         };
         this.allShortcuts = [];
-        this.domainHistory = new Map(); // 存储每个域名的历史页面列表
+        this.domainHistory = new Map(); // Store list of historical pages for each domain
         this.init();
     }
 
@@ -24,7 +24,7 @@ class NewTabManager {
             }
             this.updateSettingsUI();
         } catch (error) {
-            console.error('加载设置失败:', error);
+            console.error('Failed to load settings:', error);
         }
     }
 
@@ -33,7 +33,7 @@ class NewTabManager {
             await chrome.storage.sync.set({ shortcutSettings: this.settings });
             await this.loadShortcuts();
         } catch (error) {
-            console.error('保存设置失败:', error);
+            console.error('Failed to save settings:', error);
         }
     }
 
@@ -50,7 +50,7 @@ class NewTabManager {
         const cancelSettingsBtn = document.getElementById('cancelSettings');
         const searchInput = document.getElementById('searchInput');
 
-        // 搜索框事件监听
+        // Search box event listener
         searchInput.addEventListener('input', (e) => {
             this.filterShortcuts(e.target.value);
         });
@@ -66,7 +66,7 @@ class NewTabManager {
             
             await this.saveSettings();
             settingsPanel.classList.add('hidden');
-            this.showMessage('设置已保存！');
+            this.showMessage('Settings Saved!');
         });
 
         cancelSettingsBtn.addEventListener('click', () => {
@@ -74,19 +74,19 @@ class NewTabManager {
             settingsPanel.classList.add('hidden');
         });
 
-        // 点击面板外部关闭
+        // Close panel when clicking outside
         document.addEventListener('click', (e) => {
             if (!settingsPanel.contains(e.target) && e.target !== settingsBtn) {
                 settingsPanel.classList.add('hidden');
             }
-            // 点击弹窗外部关闭弹窗
+            // Close modal when clicking outside
             const modal = document.getElementById('historyModal');
             if (modal && e.target === modal) {
                 this.closeHistoryModal();
             }
         });
 
-        // ESC键关闭弹窗
+        // ESC key closes modal
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closeHistoryModal();
@@ -112,18 +112,18 @@ class NewTabManager {
 
     async loadShortcuts() {
         const container = document.getElementById('shortcutsContainer');
-        container.innerHTML = '<div class="loading">加载中...</div>';
+        container.innerHTML = '<div class="loading">Loading...</div>';
 
         try {
             const historyItems = await this.getRecentHistory();
-            console.log('获取到的历史记录数量:', historyItems.length);
+            console.log('Number of history records retrieved:', historyItems.length);
             const shortcuts = this.processHistoryItems(historyItems);
-            console.log('处理后的快捷方式数量:', shortcuts.length);
+            console.log('Number of shortcuts after processing:', shortcuts.length);
             this.allShortcuts = shortcuts;
             this.renderShortcuts(shortcuts);
         } catch (error) {
-            console.error('加载快捷方式失败:', error);
-            container.innerHTML = '<div class="error">加载失败，请刷新页面重试</div>';
+            console.error('Failed to load shortcuts:', error);
+            container.innerHTML = '<div class="error">Loading failed, please refresh page and try again</div>';
         }
     }
 
@@ -132,7 +132,7 @@ class NewTabManager {
             chrome.history.search({
                 text: '',
                 maxResults: 10000,
-                startTime: 0  // 从最早的时间开始
+                startTime: 0  // Start from the earliest time
             }, (results) => {
                 if (chrome.runtime.lastError) {
                     reject(new Error(chrome.runtime.lastError.message));
@@ -144,7 +144,7 @@ class NewTabManager {
     }
 
     processHistoryItems(historyItems) {
-        // 过滤掉无效的URL
+        // Filter out invalid URLs
         const validItems = historyItems.filter(item =>
             item.url &&
             !item.url.startsWith('chrome://') &&
@@ -155,32 +155,32 @@ class NewTabManager {
             item.title
         );
 
-        console.log('过滤后的有效历史记录数量:', validItems.length);
+        console.log('Number of valid history records after filtering:', validItems.length);
 
-        // 按访问时间排序
+        // Sort by visit time
         validItems.sort((a, b) => b.lastVisitTime - a.lastVisitTime);
 
-        // 统计每个域名的唯一页面数量（按URL去重）并保存页面列表
+        // Count unique pages for each domain (deduplicate by URL) and save page list
         const domainPageCount = new Map();
-        const domainPageMap = new Map(); // 临时Map用于去重，key为域名，value为Map<url, page>
+        const domainPageMap = new Map(); // Temporary Map for deduplication, key is domain, value is Map<url, page>
 
         for (const item of validItems) {
             try {
                 const domain = new URL(item.url).hostname;
-                
-                // 统计去重后的URL数量
+
+                // Count deduplicated URL count
                 if (!domainPageCount.has(domain)) {
                     domainPageCount.set(domain, new Set());
                 }
                 domainPageCount.get(domain).add(item.url);
 
-                // 使用Map确保URL去重，同时保留最新的页面信息
+                // Use Map to ensure URL deduplication while retaining latest page information
                 if (!domainPageMap.has(domain)) {
                     domainPageMap.set(domain, new Map());
                 }
                 const urlMap = domainPageMap.get(domain);
-                
-                // 只保留该URL的最新访问记录
+
+                // Only keep the latest visit record for this URL
                 if (!urlMap.has(item.url)) {
                     urlMap.set(item.url, {
                         url: item.url,
@@ -189,19 +189,19 @@ class NewTabManager {
                     });
                 }
             } catch (e) {
-                console.warn('URL解析失败:', item.url, e);
+                console.warn('URL parsing failed:', item.url, e);
                 continue;
             }
         }
 
-        // 将Map转换为数组，并按访问时间排序，每个域名最多保留30个
+        // Convert Map to array and sort by visit time, keep at most 30 pages per domain
         domainPageMap.forEach((urlMap, domain) => {
             const pages = Array.from(urlMap.values());
             pages.sort((a, b) => b.lastVisitTime - a.lastVisitTime);
             this.domainHistory.set(domain, pages.slice(0, 30));
         });
 
-        // 去重（相同域名只保留最新的）
+        // Deduplicate (only keep the latest for each domain)
         const uniqueItems = [];
         const seenDomains = new Set();
 
@@ -210,9 +210,9 @@ class NewTabManager {
                 const domain = new URL(item.url).hostname;
                 if (!seenDomains.has(domain)) {
                     seenDomains.add(domain);
-                    // 添加页面数量到item中
+                    // Add page count to item
                     item.pageCount = domainPageCount.get(domain).size;
-                    // 保存域名信息，用于点击时打开历史弹窗
+                    // Save domain info for opening history modal when clicked
                     item.domain = domain;
                     uniqueItems.push(item);
                     if (uniqueItems.length >= this.settings.displayCount) {
@@ -220,14 +220,14 @@ class NewTabManager {
                     }
                 }
             } catch (e) {
-                // 如果URL解析失败，跳过
-                console.warn('URL解析失败:', item.url, e);
+                // Skip if URL parsing fails
+                console.warn('URL parsing failed:', item.url, e);
                 continue;
             }
         }
 
-        console.log('去重后的唯一域名数量:', uniqueItems.length);
-        console.log('设置中要求显示的数量:', this.settings.displayCount);
+        console.log('Number of unique domains after deduplication:', uniqueItems.length);
+        console.log('Number of items requested in settings:', this.settings.displayCount);
 
         return uniqueItems;
     }
@@ -236,7 +236,7 @@ class NewTabManager {
         const container = document.getElementById('shortcutsContainer');
 
         if (shortcuts.length === 0) {
-            container.innerHTML = '<div class="no-shortcuts">暂无快捷方式</div>';
+            container.innerHTML = '<div class="no-shortcuts">No shortcuts available</div>';
             return;
         }
 
@@ -257,7 +257,7 @@ class NewTabManager {
 
         container.innerHTML = `<div class="${wrapperClass}">${shortcutsHTML}</div>`;
 
-        // 绑定快捷方式点击事件
+        // Bind shortcut click events
         const shortcutItems = container.querySelectorAll('.shortcut-item');
         shortcutItems.forEach((item, index) => {
             const shortcutData = shortcuts[index];
@@ -269,18 +269,18 @@ class NewTabManager {
             }
         });
 
-        // 绑定图片加载事件，实现多级回退
+        // Bind image loading events, implement multi-level fallback
         const favicons = container.querySelectorAll('.favicon-img');
         favicons.forEach(favicon => {
             const useFetch = favicon.getAttribute('data-use-fetch') === 'true';
             const faviconUrl = favicon.getAttribute('data-favicon-url');
 
-            // 对于内网地址，使用fetch获取并转换为data URL
+            // For intranet addresses, use fetch to get and convert to data URL
             if (useFetch && faviconUrl) {
                 this.fetchFaviconAsDataURL(favicon, faviconUrl).then(dataUrl => {
                     if (dataUrl) {
                         favicon.src = dataUrl;
-                        // console.log('图标加载成功 (fetch):', faviconUrl);
+                        // console.log('Icon loaded successfully (fetch):', faviconUrl);
                     } else {
                         this.tryNextSource(favicon);
                     }
@@ -302,7 +302,7 @@ class NewTabManager {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                console.warn('Favicon请求失败:', url, response.status);
+                console.warn('Favicon request failed:', url, response.status);
                 return null;
             }
 
@@ -314,7 +314,7 @@ class NewTabManager {
                 reader.readAsDataURL(blob);
             });
         } catch (error) {
-            console.warn('获取favicon失败:', url, error);
+            console.warn('Failed to fetch favicon:', url, error);
             return null;
         }
     }
@@ -323,14 +323,14 @@ class NewTabManager {
         const sources = JSON.parse(imgElement.getAttribute('data-sources') || '[]');
         const defaultIcon = imgElement.getAttribute('data-default');
 
-        console.log('图标加载失败，当前源:', imgElement.src);
-        console.log('剩余备用源:', sources.length);
+        console.log('Icon loading failed, current source:', imgElement.src);
+        console.log('Remaining backup sources:', sources.length);
 
         if (sources.length > 0) {
             const nextSource = sources.shift();
             imgElement.setAttribute('data-sources', JSON.stringify(sources));
 
-            // 检查下一个源是否也需要使用fetch（内网HTTP地址）
+            // Check if next source also needs to use fetch (intranet HTTP address)
             try {
                 const urlObj = new URL(nextSource);
                 if (nextSource.startsWith('http://') && this.isPrivateIP(urlObj.hostname)) {
@@ -339,35 +339,35 @@ class NewTabManager {
                     this.fetchFaviconAsDataURL(imgElement, nextSource).then(dataUrl => {
                         if (dataUrl) {
                             imgElement.src = dataUrl;
-                            // console.log('图标加载成功 (fetch):', nextSource);
+                            // console.log('Icon loaded successfully (fetch):', nextSource);
                         } else {
                             this.tryNextSource(imgElement);
                         }
                     });
                 } else {
                     imgElement.src = nextSource;
-                    console.log('尝试备用源:', nextSource);
+                    console.log('Trying backup source:', nextSource);
                 }
             } catch (e) {
-                console.warn('URL解析失败:', nextSource);
+                console.warn('URL parsing failed:', nextSource);
                 imgElement.src = nextSource;
             }
         } else if (defaultIcon) {
             imgElement.src = defaultIcon;
-            console.log('使用默认图标');
+            console.log('Using default icon');
         }
     }
 
     createShortcutHTML(item) {
         if (!this.settings.showFavicons) {
-            // 移除href属性，改为data-url存储
+            // Remove href attribute, store in data-url instead
             return `
                 <div class="shortcut-item" data-url="${item.url}" data-domain="${item.domain}" data-page-count="${item.pageCount}">
                     <div class="shortcut-info">
                         <div class="shortcut-title" title="${item.title}">${item.title}</div>
                         <div class="shortcut-url" title="${item.url}">${new URL(item.url).hostname}</div>
                     </div>
-                    <div class="page-count-badge" title="${item.pageCount}个历史页面">${item.pageCount}</div>
+                    <div class="page-count-badge" title="${item.pageCount} historical pages">${item.pageCount}</div>
                 </div>
             `;
         }
@@ -378,18 +378,18 @@ class NewTabManager {
         const port = urlObj.port;
         
         const firstLetter = domain.charAt(0).toUpperCase();
-        
-        // 生成首字母作为备用图标
+
+        // Generate first letter as fallback icon
         const defaultIcon = this.generateLetterIcon(firstLetter);
-        
-        // 构建正确的favicon基础URL（包含协议和端口）
+
+        // Build correct favicon base URL (including protocol and port)
         const originBase = `${protocol}//${domain}${port ? ':' + port : ''}`;
-        
-        // 检测是否是内网IP或本地地址
+
+        // Detect if it's an intranet IP or local address
         const isPrivateIP = this.isPrivateIP(domain);
         const originalFaviconUrl = `${originBase}/favicon.ico`;
-        
-        // 多个图标服务源 - 内网地址优先使用原始网站，公网地址优先使用第三方服务
+
+        // Multiple icon service sources - intranet addresses prioritize original website, public addresses prioritize third-party services
         const iconSources = isPrivateIP ? [
             originalFaviconUrl,
             `https://favicon.yandex.net/favicon/${domain}`,
@@ -402,7 +402,7 @@ class NewTabManager {
             originalFaviconUrl
         ];
 
-        // 对于内网地址，使用fetch绕过CORS
+        // For intranet addresses, use fetch to bypass CORS
         const useFetch = isPrivateIP ? 'true' : 'false';
 
         const favicon = `
@@ -418,7 +418,7 @@ class NewTabManager {
             </div>
         `;
 
-        // 移除href属性，改为data-url存储
+        // Remove href attribute, store in data-url instead
         return `
             <div class="shortcut-item" data-url="${item.url}" data-domain="${item.domain}" data-page-count="${item.pageCount}">
                 ${favicon}
@@ -426,37 +426,37 @@ class NewTabManager {
                     <div class="shortcut-title" title="${item.title}">${item.title}</div>
                     <div class="shortcut-url" title="${item.url}">${domain}</div>
                 </div>
-                <div class="page-count-badge" title="${item.pageCount}个历史页面">${item.pageCount}</div>
+                <div class="page-count-badge" title="${item.pageCount} historical pages">${item.pageCount}</div>
             </div>
         `;
     }
 
     generateLetterIcon(letter) {
-        // 生成彩色字母图标
+        // Generate colored letter icon
         const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
         const color = colors[letter.charCodeAt(0) % colors.length];
         return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${color}"/><text x="50%" y="50%" font-size="18" font-family="Arial, sans-serif" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">${letter}</text></svg>`)}`;
     }
 
     isPrivateIP(domain) {
-        // 检测是否是内网IP或本地地址
+        // Detect if it's an intranet IP or local address
         if (domain === 'localhost' || domain === '127.0.0.1' || domain === '::1') {
             return true;
         }
-        
-        // 检查IPv4内网地址范围
+
+        // Check IPv4 intranet address ranges
         const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
         const match = domain.match(ipv4Regex);
-        
+
         if (match) {
             const [, first, second] = match.map(Number);
-            
+
             // 10.0.0.0 - 10.255.255.255
             if (first === 10) return true;
-            
+
             // 172.16.0.0 - 172.31.255.255
             if (first === 172 && second >= 16 && second <= 31) return true;
-            
+
             // 192.168.0.0 - 192.168.255.255
             if (first === 192 && second === 168) return true;
         }
@@ -494,18 +494,18 @@ class NewTabManager {
         const pages = this.domainHistory.get(domain) || [];
 
         if (pages.length === 0) {
-            // 如果没有历史页面，直接跳转
+            // If no historical pages, navigate directly
             window.location.href = shortcutData.url;
             return;
         }
 
-        // 创建弹窗HTML
+        // Create modal HTML
         const modalHTML = `
             <div id="historyModal" class="history-modal">
                 <div class="history-modal-content">
                     <div class="history-modal-header">
-                        <h3 class="history-modal-title">${new URL(shortcutData.url).hostname} 的历史页面</h3>
-                        <button class="close-modal-btn" title="关闭">×</button>
+                        <h3 class="history-modal-title">Historical pages of ${new URL(shortcutData.url).hostname}</h3>
+                        <button class="close-modal-btn" title="Close">×</button>
                     </div>
                     <div class="history-modal-body">
                         <div class="history-pages-list">
@@ -513,7 +513,7 @@ class NewTabManager {
                                 <a href="${page.url}" class="history-page-item" title="${page.title}">
                                     <div class="history-page-index">${index + 1}</div>
                                     <div class="history-page-info">
-                                        <div class="history-page-title">${page.title || '无标题'}</div>
+                                        <div class="history-page-title">${page.title || 'No title'}</div>
                                         <div class="history-page-url">${new URL(page.url).pathname}</div>
                                     </div>
                                     <div class="history-page-time">${this.formatTime(page.lastVisitTime)}</div>
@@ -525,7 +525,7 @@ class NewTabManager {
             </div>
         `;
 
-        // 插入到页面中
+        // Insert into page
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
         const modal = document.getElementById('historyModal');
@@ -546,28 +546,28 @@ class NewTabManager {
         const now = new Date();
         const diff = now - date;
 
-        // 小于1分钟
+        // Less than 1 minute
         if (diff < 60000) {
-            return '刚刚';
+            return 'Just now';
         }
-        // 小于1小时
+        // Less than 1 hour
         if (diff < 3600000) {
-            return `${Math.floor(diff / 60000)}分钟前`;
+            return `${Math.floor(diff / 60000)} minutes ago`;
         }
-        // 小于1天
+        // Less than 1 day
         if (diff < 86400000) {
-            return `${Math.floor(diff / 3600000)}小时前`;
+            return `${Math.floor(diff / 3600000)} hours ago`;
         }
-        // 小于7天
+        // Less than 7 days
         if (diff < 604800000) {
-            return `${Math.floor(diff / 86400000)}天前`;
+            return `${Math.floor(diff / 86400000)} days ago`;
         }
-        // 格式化日期
+        // Format date
         return `${date.getMonth() + 1}/${date.getDate()}`;
     }
 }
 
-// 初始化
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new NewTabManager();
 });

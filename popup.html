@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>快捷方式设置</title>
+    <title>Shortcut Settings</title>
     <link rel="stylesheet" href="styles/popup.css">
 </head>
 <body>
     <div class="popup-container">
-        <h3>空白页快捷方式设置</h3>
+        <h3>Blank Page Shortcuts Settings</h3>
         <div class="setting-group">
-            <label for="popupDisplayCount">显示数量：</label>
+            <label for="popupDisplayCount">Display Count:</label>
             <select id="popupDisplayCount">
-                <option value="4">4个</option>
-                <option value="6">6个</option>
-                <option value="8">8个</option>
-                <option value="10">10个</option>
-                <option value="12">12个</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
             </select>
         </div>
         <div class="setting-group">
-            <label for="popupDisplayFormat">显示格式：</label>
+            <label for="popupDisplayFormat">Display Format:</label>
             <select id="popupDisplayFormat">
-                <option value="grid">网格布局</option>
-                <option value="list">列表布局</option>
-                <option value="card">卡片布局</option>
+                <option value="grid">Grid Layout</option>
+                <option value="list">List Layout</option>
+                <option value="card">Card Layout</option>
             </select>
         </div>
         <div class="setting-group">
-            <label for="popupShowFavicons">显示网站图标：</label>
+            <label for="popupShowFavicons">Show Website Icons:</label>
             <input type="checkbox" id="popupShowFavicons" checked>
         </div>
-        <button id="savePopupSettings" class="save-btn">保存设置</button>
-        <div id="saveMessage" class="message hidden">设置已保存！</div>
+        <button id="savePopupSettings" class="save-btn">Save Settings</button>
+        <div id="saveMessage" class="message hidden">Settings Saved!</div>
     </div>
     <script src="scripts/popup.js"></script>
 </body>

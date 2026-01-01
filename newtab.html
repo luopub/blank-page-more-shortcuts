@@ -1,57 +1,57 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新标签页</title>
+    <title>New Tab</title>
     <link rel="stylesheet" href="styles/newtab.css">
 </head>
 <body>
     <div class="container">
-        <!-- 设置按钮和搜索框 -->
+        <!-- Settings button and search box -->
         <div class="settings-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="搜索快捷方式...">
-            <button id="settingsBtn" class="settings-btn" title="设置快捷方式格式">
-                ⚙️ 设置
+            <input type="text" id="searchInput" class="search-input" placeholder="Search shortcuts...">
+            <button id="settingsBtn" class="settings-btn" title="Configure shortcut format">
+                ⚙️ Settings
             </button>
         </div>
 
-        <!-- 设置面板 -->
+        <!-- Settings panel -->
         <div id="settingsPanel" class="settings-panel hidden">
             <div class="panel-content">
-                <h3>快捷方式设置</h3>
+                <h3>Shortcut Settings</h3>
                 <div class="setting-group">
-                    <label for="displayCount">显示数量：</label>
+                    <label for="displayCount">Display Count:</label>
                     <select id="displayCount">
-                        <option value="10">10个</option>
-                        <option value="20">20个</option>
-                        <option value="30" selected>30个</option>
-                        <option value="40">40个</option>
-                        <option value="50">50个</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30" selected>30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
                     </select>
                 </div>
                 <div class="setting-group">
-                    <label for="displayFormat">显示格式：</label>
+                    <label for="displayFormat">Display Format:</label>
                     <select id="displayFormat">
-                        <option value="grid">网格布局</option>
-                        <option value="list">列表布局</option>
-                        <option value="card">卡片布局</option>
+                        <option value="grid">Grid Layout</option>
+                        <option value="list">List Layout</option>
+                        <option value="card">Card Layout</option>
                     </select>
                 </div>
                 <div class="setting-group">
-                    <label for="showFavicons">显示网站图标：</label>
+                    <label for="showFavicons">Show Website Icons:</label>
                     <input type="checkbox" id="showFavicons" checked>
                 </div>
                 <div class="setting-actions">
-                    <button id="saveSettings" class="save-btn">保存设置</button>
-                    <button id="cancelSettings" class="cancel-btn">取消</button>
+                    <button id="saveSettings" class="save-btn">Save Settings</button>
+                    <button id="cancelSettings" class="cancel-btn">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <!-- 快捷方式容器 -->
+        <!-- Shortcuts container -->
         <div id="shortcutsContainer" class="shortcuts-container">
-            <div class="loading">加载中...</div>
+            <div class="loading">Loading...</div>
         </div>
     </div>
 

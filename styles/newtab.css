@@ -18,7 +18,7 @@ body {
     position: relative;
 }
 
-/* 设置按钮 */
+/* Settings button */
 .settings-container {
     position: fixed;
     top: 20px;
@@ -69,7 +69,7 @@ body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 设置面板 */
+/* Settings panel */
 .settings-panel {
     position: fixed;
     top: 80px;
@@ -153,7 +153,7 @@ body {
     background: #da190b;
 }
 
-/* 快捷方式容器 */
+/* Shortcuts container */
 .shortcuts-container {
     margin-top: 100px;
     display: flex;
@@ -168,7 +168,7 @@ body {
     text-align: center;
 }
 
-/* 网格布局 */
+/* Grid layout */
 .shortcuts-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -260,7 +260,7 @@ body {
     min-width: 0;
 }
 
-/* 页面数量徽章 */
+/* Page count badge */
 .page-count-badge {
     position: absolute;
     top: 8px;
@@ -277,7 +277,7 @@ body {
     z-index: 10;
 }
 
-/* 历史弹窗 */
+/* History modal */
 .history-modal {
     position: fixed;
     top: 0;
@@ -434,7 +434,7 @@ body {
     color: #999;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .history-modal-content {
         width: 95%;
@@ -463,7 +463,7 @@ body {
     }
 }
 
-/* 列表布局 */
+/* List layout */
 .shortcuts-list {
     display: flex;
     flex-direction: column;
@@ -493,7 +493,7 @@ body {
     width: 100%;
 }
 
-/* 卡片布局 */
+/* Card layout */
 .shortcuts-card {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -522,7 +522,7 @@ body {
     font-size: 13px;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .container {
         padding: 10px;

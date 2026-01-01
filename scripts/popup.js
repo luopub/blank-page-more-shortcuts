@@ -21,24 +21,24 @@ class PopupManager {
             }
             this.updateSettingsUI();
         } catch (error) {
-            console.error('加载设置失败:', error);
+            console.error('Failed to load settings:', error);
         }
     }
 
     async saveSettings() {
         try {
             await chrome.storage.sync.set({ shortcutSettings: this.settings });
-            this.showMessage('设置已保存！');
-            
-            // 通知新标签页更新
+            this.showMessage('Settings Saved!');
+
+            // Notify new tab page to update
             chrome.tabs.query({ url: 'chrome://newtab/*' }, (tabs) => {
                 tabs.forEach(tab => {
                     chrome.tabs.reload(tab.id);
                 });
             });
         } catch (error) {
-            console.error('保存设置失败:', error);
-            this.showMessage('保存失败，请重试');
+            console.error('Failed to save settings:', error);
+            this.showMessage('Save failed, please try again');
         }
     }
 
@@ -59,7 +59,7 @@ class PopupManager {
             await this.saveSettings();
         });
 
-        // 实时更新设置
+        // Real-time update settings
         document.getElementById('popupDisplayCount').addEventListener('change', (e) => {
             this.settings.displayCount = parseInt(e.target.value);
         });
@@ -84,7 +84,7 @@ class PopupManager {
     }
 }
 
-// 初始化
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new PopupManager();
 });
