@@ -147,6 +147,21 @@ class NewTabManager {
         // 按访问时间排序
         validItems.sort((a, b) => b.lastVisitTime - a.lastVisitTime);
 
+        // 统计每个域名的唯一页面数量（按URL去重）
+        const domainPageCount = new Map();
+        for (const item of validItems) {
+            try {
+                const domain = new URL(item.url).hostname;
+                if (!domainPageCount.has(domain)) {
+                    domainPageCount.set(domain, new Set());
+                }
+                domainPageCount.get(domain).add(item.url);
+            } catch (e) {
+                console.warn('URL解析失败:', item.url, e);
+                continue;
+            }
+        }
+
         // 去重（相同域名只保留最新的）
         const uniqueItems = [];
         const seenDomains = new Set();
@@ -156,6 +171,8 @@ class NewTabManager {
                 const domain = new URL(item.url).hostname;
                 if (!seenDomains.has(domain)) {
                     seenDomains.add(domain);
+                    // 添加页面数量到item中
+                    item.pageCount = domainPageCount.get(domain).size;
                     uniqueItems.push(item);
                     if (uniqueItems.length >= this.settings.displayCount) {
                         break;
@@ -296,6 +313,7 @@ class NewTabManager {
                         <div class="shortcut-title" title="${item.title}">${item.title}</div>
                         <div class="shortcut-url" title="${item.url}">${new URL(item.url).hostname}</div>
                     </div>
+                    <div class="page-count-badge" title="${item.pageCount}个历史页面">${item.pageCount}</div>
                 </a>
             `;
         }
@@ -353,6 +371,7 @@ class NewTabManager {
                     <div class="shortcut-title" title="${item.title}">${item.title}</div>
                     <div class="shortcut-url" title="${item.url}">${domain}</div>
                 </div>
+                <div class="page-count-badge" title="${item.pageCount}个历史页面">${item.pageCount}</div>
             </a>
         `;
     }
