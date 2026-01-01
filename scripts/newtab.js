@@ -1,7 +1,7 @@
 class NewTabManager {
     constructor() {
         this.settings = {
-            displayCount: 30,
+            displayCount: 50,
             displayFormat: 'grid',
             showFavicons: true
         };
