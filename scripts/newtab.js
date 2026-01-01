@@ -164,15 +164,23 @@ class NewTabManager {
         }
 
         container.innerHTML = `<div class="${wrapperClass}">${shortcutsHTML}</div>`;
+
+        // 绑定图片加载失败事件
+        const favicons = container.querySelectorAll('.favicon-img');
+        favicons.forEach(favicon => {
+            favicon.addEventListener('error', () => {
+                favicon.style.display = 'none';
+            });
+        });
     }
 
     createShortcutHTML(item) {
         const favicon = this.settings.showFavicons ? 
-            `<img class="shortcut-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=32" alt="" onerror="this.style.display='none'">` : 
+            `<img class="shortcut-favicon favicon-img" src="https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=32" alt="">` : 
             '';
 
         return `
-            <a href="${item.url}" class="shortcut-item" target="_blank">
+            <a href="${item.url}" class="shortcut-item">
                 ${favicon}
                 <div class="shortcut-info">
                     <div class="shortcut-title" title="${item.title}">${item.title}</div>
