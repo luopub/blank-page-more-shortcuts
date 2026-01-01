@@ -175,29 +175,89 @@ class NewTabManager {
 
         container.innerHTML = `<div class="${wrapperClass}">${shortcutsHTML}</div>`;
 
-        // 绑定图片加载失败事件
+        // 绑定图片加载事件，实现多级回退
         const favicons = container.querySelectorAll('.favicon-img');
         favicons.forEach(favicon => {
-            favicon.addEventListener('error', () => {
-                favicon.style.display = 'none';
+            favicon.addEventListener('error', (e) => {
+                const sources = JSON.parse(e.target.getAttribute('data-sources') || '[]');
+                const defaultIcon = e.target.getAttribute('data-default');
+                
+                console.log('图标加载失败，当前源:', e.target.src);
+                console.log('剩余备用源:', sources.length);
+                
+                if (sources.length > 0) {
+                    // 尝试下一个备用源
+                    const nextSource = sources.shift();
+                    e.target.setAttribute('data-sources', JSON.stringify(sources));
+                    e.target.src = nextSource;
+                    console.log('尝试备用源:', nextSource);
+                } else if (defaultIcon) {
+                    // 所有源都失败，使用默认字母图标
+                    e.target.src = defaultIcon;
+                    console.log('使用默认图标');
+                }
+            });
+            
+            // 添加加载成功日志
+            favicon.addEventListener('load', (e) => {
+                console.log('图标加载成功:', e.target.src);
             });
         });
     }
 
     createShortcutHTML(item) {
-        const favicon = this.settings.showFavicons ? 
-            `<img class="shortcut-favicon favicon-img" src="https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=32" alt="">` : 
-            '';
+        if (!this.settings.showFavicons) {
+            return `
+                <a href="${item.url}" class="shortcut-item">
+                    <div class="shortcut-info">
+                        <div class="shortcut-title" title="${item.title}">${item.title}</div>
+                        <div class="shortcut-url" title="${item.url}">${new URL(item.url).hostname}</div>
+                    </div>
+                </a>
+            `;
+        }
+
+        const domain = new URL(item.url).hostname;
+        const firstLetter = domain.charAt(0).toUpperCase();
+        
+        // 生成首字母作为备用图标
+        const defaultIcon = this.generateLetterIcon(firstLetter);
+        
+        // 多个图标服务源
+        const iconSources = [
+            `https://favicon.yandex.net/favicon/${domain}`,
+            `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=32`,
+            `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+            `https://${domain}/favicon.ico`
+        ];
+
+        const favicon = `
+            <div class="shortcut-favicon favicon-container">
+                <img class="favicon-img" 
+                     src="${iconSources[0]}" 
+                     data-sources='${JSON.stringify(iconSources.slice(1))}'
+                     data-default="${defaultIcon}"
+                     alt=""
+                     crossorigin="anonymous">
+            </div>
+        `;
 
         return `
             <a href="${item.url}" class="shortcut-item">
                 ${favicon}
                 <div class="shortcut-info">
                     <div class="shortcut-title" title="${item.title}">${item.title}</div>
-                    <div class="shortcut-url" title="${item.url}">${new URL(item.url).hostname}</div>
+                    <div class="shortcut-url" title="${item.url}">${domain}</div>
                 </div>
             </a>
         `;
+    }
+
+    generateLetterIcon(letter) {
+        // 生成彩色字母图标
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
+        const color = colors[letter.charCodeAt(0) % colors.length];
+        return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${color}"/><text x="50%" y="50%" font-size="18" font-family="Arial, sans-serif" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">${letter}</text></svg>`)}`;
     }
 
     showMessage(text) {
