@@ -1,7 +1,7 @@
 class NewTabManager {
     constructor() {
         this.settings = {
-            displayCount: 6,
+            displayCount: 30,
             displayFormat: 'grid',
             showFavicons: true
         };
@@ -80,7 +80,9 @@ class NewTabManager {
 
         try {
             const historyItems = await this.getRecentHistory();
+            console.log('获取到的历史记录数量:', historyItems.length);
             const shortcuts = this.processHistoryItems(historyItems);
+            console.log('处理后的快捷方式数量:', shortcuts.length);
             this.renderShortcuts(shortcuts);
         } catch (error) {
             console.error('加载快捷方式失败:', error);
@@ -92,8 +94,8 @@ class NewTabManager {
         return new Promise((resolve, reject) => {
             chrome.history.search({
                 text: '',
-                maxResults: 50,
-                startTime: Date.now() - (30 * 24 * 60 * 60 * 1000) // 最近30天
+                maxResults: 10000,
+                startTime: 0  // 从最早的时间开始
             }, (results) => {
                 if (chrome.runtime.lastError) {
                     reject(new Error(chrome.runtime.lastError.message));
@@ -106,13 +108,17 @@ class NewTabManager {
 
     processHistoryItems(historyItems) {
         // 过滤掉无效的URL
-        const validItems = historyItems.filter(item => 
-            item.url && 
+        const validItems = historyItems.filter(item =>
+            item.url &&
             !item.url.startsWith('chrome://') &&
             !item.url.startsWith('chrome-extension://') &&
             !item.url.startsWith('moz-extension://') &&
+            !item.url.startsWith('edge://') &&
+            !item.url.startsWith('about:') &&
             item.title
         );
+
+        console.log('过滤后的有效历史记录数量:', validItems.length);
 
         // 按访问时间排序
         validItems.sort((a, b) => b.lastVisitTime - a.lastVisitTime);
@@ -133,9 +139,13 @@ class NewTabManager {
                 }
             } catch (e) {
                 // 如果URL解析失败，跳过
+                console.warn('URL解析失败:', item.url, e);
                 continue;
             }
         }
+
+        console.log('去重后的唯一域名数量:', uniqueItems.length);
+        console.log('设置中要求显示的数量:', this.settings.displayCount);
 
         return uniqueItems;
     }
