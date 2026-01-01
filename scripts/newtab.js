@@ -541,7 +541,7 @@ class NewTabManager {
             <div id="historyModal" class="history-modal">
                 <div class="history-modal-content">
                     <div class="history-modal-header">
-                        <h3 class="history-modal-title">${chrome.i18n.getMessage('historyModalTitle', new URL(shortcutData.url).hostname)}</h3>
+                        <h3 class="history-modal-title">${chrome.i18n.getMessage('historyModalTitle').replace('{domain}', domain)}</h3>
                         <button class="close-modal-btn" title="${chrome.i18n.getMessage('closeModal')}">×</button>
                     </div>
                     <div class="history-modal-body">
@@ -589,15 +589,18 @@ class NewTabManager {
         }
         // Less than 1 hour
         if (diff < 3600000) {
-            return chrome.i18n.getMessage('minutesAgo', Math.floor(diff / 60000).toString());
+            const minutes = Math.floor(diff / 60000);
+            return chrome.i18n.getMessage('minutesAgo').replace('{count}', minutes);
         }
         // Less than 1 day
         if (diff < 86400000) {
-            return chrome.i18n.getMessage('hoursAgo', Math.floor(diff / 3600000).toString());
+            const hours = Math.floor(diff / 3600000);
+            return chrome.i18n.getMessage('hoursAgo').replace('{count}', hours);
         }
         // Less than 7 days
         if (diff < 604800000) {
-            return chrome.i18n.getMessage('daysAgo', Math.floor(diff / 86400000).toString());
+            const days = Math.floor(diff / 86400000);
+            return chrome.i18n.getMessage('daysAgo').replace('{count}', days);
         }
         // Format date
         return `${date.getMonth() + 1}/${date.getDate()}`;
