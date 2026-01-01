@@ -6,6 +6,7 @@ class NewTabManager {
             showFavicons: true
         };
         this.allShortcuts = [];
+        this.domainHistory = new Map(); // 存储每个域名的历史页面列表
         this.init();
     }
 
@@ -78,6 +79,18 @@ class NewTabManager {
             if (!settingsPanel.contains(e.target) && e.target !== settingsBtn) {
                 settingsPanel.classList.add('hidden');
             }
+            // 点击弹窗外部关闭弹窗
+            const modal = document.getElementById('historyModal');
+            if (modal && e.target === modal) {
+                this.closeHistoryModal();
+            }
+        });
+
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeHistoryModal();
+            }
         });
     }
 
@@ -147,20 +160,46 @@ class NewTabManager {
         // 按访问时间排序
         validItems.sort((a, b) => b.lastVisitTime - a.lastVisitTime);
 
-        // 统计每个域名的唯一页面数量（按URL去重）
+        // 统计每个域名的唯一页面数量（按URL去重）并保存页面列表
         const domainPageCount = new Map();
+        const domainPageMap = new Map(); // 临时Map用于去重，key为域名，value为Map<url, page>
+
         for (const item of validItems) {
             try {
                 const domain = new URL(item.url).hostname;
+                
+                // 统计去重后的URL数量
                 if (!domainPageCount.has(domain)) {
                     domainPageCount.set(domain, new Set());
                 }
                 domainPageCount.get(domain).add(item.url);
+
+                // 使用Map确保URL去重，同时保留最新的页面信息
+                if (!domainPageMap.has(domain)) {
+                    domainPageMap.set(domain, new Map());
+                }
+                const urlMap = domainPageMap.get(domain);
+                
+                // 只保留该URL的最新访问记录
+                if (!urlMap.has(item.url)) {
+                    urlMap.set(item.url, {
+                        url: item.url,
+                        title: item.title,
+                        lastVisitTime: item.lastVisitTime
+                    });
+                }
             } catch (e) {
                 console.warn('URL解析失败:', item.url, e);
                 continue;
             }
         }
+
+        // 将Map转换为数组，并按访问时间排序，每个域名最多保留30个
+        domainPageMap.forEach((urlMap, domain) => {
+            const pages = Array.from(urlMap.values());
+            pages.sort((a, b) => b.lastVisitTime - a.lastVisitTime);
+            this.domainHistory.set(domain, pages.slice(0, 30));
+        });
 
         // 去重（相同域名只保留最新的）
         const uniqueItems = [];
@@ -173,6 +212,8 @@ class NewTabManager {
                     seenDomains.add(domain);
                     // 添加页面数量到item中
                     item.pageCount = domainPageCount.get(domain).size;
+                    // 保存域名信息，用于点击时打开历史弹窗
+                    item.domain = domain;
                     uniqueItems.push(item);
                     if (uniqueItems.length >= this.settings.displayCount) {
                         break;
@@ -215,6 +256,18 @@ class NewTabManager {
         }
 
         container.innerHTML = `<div class="${wrapperClass}">${shortcutsHTML}</div>`;
+
+        // 绑定快捷方式点击事件
+        const shortcutItems = container.querySelectorAll('.shortcut-item');
+        shortcutItems.forEach((item, index) => {
+            const shortcutData = shortcuts[index];
+            if (shortcutData.pageCount > 1) {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.openHistoryModal(shortcutData);
+                });
+            }
+        });
 
         // 绑定图片加载事件，实现多级回退
         const favicons = container.querySelectorAll('.favicon-img');
@@ -307,14 +360,15 @@ class NewTabManager {
 
     createShortcutHTML(item) {
         if (!this.settings.showFavicons) {
+            // 移除href属性，改为data-url存储
             return `
-                <a href="${item.url}" class="shortcut-item">
+                <div class="shortcut-item" data-url="${item.url}" data-domain="${item.domain}" data-page-count="${item.pageCount}">
                     <div class="shortcut-info">
                         <div class="shortcut-title" title="${item.title}">${item.title}</div>
                         <div class="shortcut-url" title="${item.url}">${new URL(item.url).hostname}</div>
                     </div>
                     <div class="page-count-badge" title="${item.pageCount}个历史页面">${item.pageCount}</div>
-                </a>
+                </div>
             `;
         }
 
@@ -364,15 +418,16 @@ class NewTabManager {
             </div>
         `;
 
+        // 移除href属性，改为data-url存储
         return `
-            <a href="${item.url}" class="shortcut-item">
+            <div class="shortcut-item" data-url="${item.url}" data-domain="${item.domain}" data-page-count="${item.pageCount}">
                 ${favicon}
                 <div class="shortcut-info">
                     <div class="shortcut-title" title="${item.title}">${item.title}</div>
                     <div class="shortcut-url" title="${item.url}">${domain}</div>
                 </div>
                 <div class="page-count-badge" title="${item.pageCount}个历史页面">${item.pageCount}</div>
-            </a>
+            </div>
         `;
     }
 
@@ -432,6 +487,83 @@ class NewTabManager {
         setTimeout(() => {
             message.remove();
         }, 3000);
+    }
+
+    openHistoryModal(shortcutData) {
+        const domain = shortcutData.domain;
+        const pages = this.domainHistory.get(domain) || [];
+
+        if (pages.length === 0) {
+            // 如果没有历史页面，直接跳转
+            window.location.href = shortcutData.url;
+            return;
+        }
+
+        // 创建弹窗HTML
+        const modalHTML = `
+            <div id="historyModal" class="history-modal">
+                <div class="history-modal-content">
+                    <div class="history-modal-header">
+                        <h3 class="history-modal-title">${new URL(shortcutData.url).hostname} 的历史页面</h3>
+                        <button class="close-modal-btn" title="关闭">×</button>
+                    </div>
+                    <div class="history-modal-body">
+                        <div class="history-pages-list">
+                            ${pages.map((page, index) => `
+                                <a href="${page.url}" class="history-page-item" title="${page.title}">
+                                    <div class="history-page-index">${index + 1}</div>
+                                    <div class="history-page-info">
+                                        <div class="history-page-title">${page.title || '无标题'}</div>
+                                        <div class="history-page-url">${new URL(page.url).pathname}</div>
+                                    </div>
+                                    <div class="history-page-time">${this.formatTime(page.lastVisitTime)}</div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 插入到页面中
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        const modal = document.getElementById('historyModal');
+        const closeBtn = modal.querySelector('.close-modal-btn');
+
+        closeBtn.addEventListener('click', () => this.closeHistoryModal());
+    }
+
+    closeHistoryModal() {
+        const modal = document.getElementById('historyModal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+    formatTime(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = now - date;
+
+        // 小于1分钟
+        if (diff < 60000) {
+            return '刚刚';
+        }
+        // 小于1小时
+        if (diff < 3600000) {
+            return `${Math.floor(diff / 60000)}分钟前`;
+        }
+        // 小于1天
+        if (diff < 86400000) {
+            return `${Math.floor(diff / 3600000)}小时前`;
+        }
+        // 小于7天
+        if (diff < 604800000) {
+            return `${Math.floor(diff / 86400000)}天前`;
+        }
+        // 格式化日期
+        return `${date.getMonth() + 1}/${date.getDate()}`;
     }
 }
 
