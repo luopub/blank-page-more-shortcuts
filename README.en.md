@@ -1,6 +1,15 @@
 # Blank Page Shortcuts Chrome Extension
 
-A feature-rich Chrome browser extension that displays shortcuts to recently visited websites on the new tab page, with support for custom display formats and quantities.
+> 🚀 A feature-rich Chrome browser extension that displays shortcuts to recently visited websites on the new tab page, with support for custom display formats and quantities.
+
+![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-green)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-orange)
+![Language](https://img.shields.io/badge/languages-7-green)
+
+## Keywords
+
+Chrome extension, new tab, shortcuts, bookmarks, history manager, browser tools, productivity, customization, multilingual, Manifest V3, website launcher, quick access
 
 ## Features
 
@@ -130,3 +139,36 @@ The extension requires the following permissions:
 ## License
 
 MIT License
+
+## Related Tags
+
+`#chrome-extension` `#new-tab` `#bookmarks` `#browser-extension` `#productivity` `#manifest-v3` `#multilingual` `#shortcut-manager` `#history-manager` `#customization`
+
+---
+
+## Contributing
+
+Issues and Pull Requests are welcome!
+
+## Links
+
+- [中文 README](README.md)
+- [Deutsche README](README.de.md)
+- [Español README](README.es.md)
+- [Français README](README.fr.md)
+- [日本語 README](README.ja.md)
+- [한국어 README](README.ko.md)
+
+---
+
+### Other Chrome Extensions You Might Like
+
+If you enjoy this extension, you might also be interested in:
+
+- Productivity tool extensions
+- Bookmark management extensions
+- Browser experience optimization extensions
+
+### Support
+
+If this extension helps you, please give it a ⭐️ Star!

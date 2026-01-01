@@ -4,8 +4,8 @@
     "description": "Extension name"
   },
   "extensionDescription": {
-    "message": "Display shortcuts of recently visited pages on the blank tab page, supports custom format and quantity",
-    "description": "Extension description"
+    "message": "Display shortcuts of recently visited pages on the blank tab page. Customize display format (grid, list, card), quantity (10-50), search bookmarks, view browsing history. Boost your productivity with quick access to your favorite websites.",
+    "description": "Extension description with SEO keywords"
   },
   "actionTitle": {
     "message": "Blank Page Shortcuts Settings",

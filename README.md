@@ -1,8 +1,21 @@
 # 空白页快捷方式 Chrome 扩展
 
-一个功能丰富的Chrome浏览器扩展，用于在新标签页显示最近访问网站的快捷方式，支持自定义显示格式和数量。
+> 🚀 一个功能丰富的Chrome浏览器扩展，在新标签页显示最近访问网站的快捷方式，支持自定义显示格式和数量。
 
-## 功能特性
+![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-green)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-orange)
+![Language](https://img.shields.io/badge/languages-7-green)
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=luopub/blank-page-more-shortcuts&type=Date)](https://star-history.com/#luopub/blank-page-more-shortcuts&Date)
+
+## 关键词
+
+Chrome扩展、新标签页、快捷方式、书签、历史记录、浏览器工具、 productivity、自定义、多语言、 Manifest V3
+
+## 核心功能
 
 - 🎯 **智能快捷方式**: 自动获取最近访问的网站，按域名去重
 - ⚙️ **灵活设置**: 支持自定义显示数量（10-50个）和格式（网格/列表/卡片）
@@ -14,6 +27,13 @@
 - 🌐 **网站图标**: 智能加载网站favicon，支持内网IP地址
 - 🌍 **多语言支持**: 支持中文、英语、德语、法语、西班牙语、日语、韩语
 - 📊 **页面计数**: 显示每个域名的历史页面数量
+
+## 适用场景
+
+✅ **提高生产力**: 快速访问常用网站，无需手动添加书签  
+✅ **工作环境**: 快速访问开发工具、文档、项目管理系统  
+✅ **学习研究**: 快速查找经常访问的学习资源和参考资料  
+✅ **日常浏览**: 提升浏览体验，快速打开喜爱的网站
 
 ## 安装方法
 
@@ -130,3 +150,36 @@ blank-page-more-shortcuts/
 ## 许可证
 
 MIT License
+
+## 相关标签
+
+`#chrome-extension` `#new-tab` `#bookmarks` `#browser-extension` `#productivity` `#manifest-v3` `#multilingual` `#shortcut-manager` `#history-manager` `#customization`
+
+---
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 链接
+
+- [English README](README.en.md)
+- [Deutsche README](README.de.md)
+- [Español README](README.es.md)
+- [Français README](README.fr.md)
+- [日本語 README](README.ja.md)
+- [한국어 README](README.ko.md)
+
+---
+
+### 其他 Chrome 扩展推荐
+
+如果您喜欢这个扩展，您可能还会对以下类型的扩展感兴趣：
+
+- 生产力工具类扩展
+- 书签管理类扩展
+- 浏览体验优化类扩展
+
+### 支持
+
+如果这个扩展对您有帮助，请给它一个⭐️ Star！
