@@ -210,7 +210,7 @@ class NewTabManager {
                 this.fetchFaviconAsDataURL(favicon, faviconUrl).then(dataUrl => {
                     if (dataUrl) {
                         favicon.src = dataUrl;
-                        console.log('图标加载成功 (fetch):', faviconUrl);
+                        // console.log('图标加载成功 (fetch):', faviconUrl);
                     } else {
                         this.tryNextSource(favicon);
                     }
@@ -223,7 +223,7 @@ class NewTabManager {
             });
 
             favicon.addEventListener('load', (e) => {
-                console.log('图标加载成功:', e.target.src);
+                // console.log('图标加载成功:', e.target.src);
             });
         });
     }
@@ -269,7 +269,7 @@ class NewTabManager {
                     this.fetchFaviconAsDataURL(imgElement, nextSource).then(dataUrl => {
                         if (dataUrl) {
                             imgElement.src = dataUrl;
-                            console.log('图标加载成功 (fetch):', nextSource);
+                            // console.log('图标加载成功 (fetch):', nextSource);
                         } else {
                             this.tryNextSource(imgElement);
                         }
