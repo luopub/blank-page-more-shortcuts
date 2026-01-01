@@ -8,7 +8,19 @@ class PopupManager {
         this.init();
     }
 
+    initI18n() {
+        // Translate all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const message = chrome.i18n.getMessage(key);
+            if (message) {
+                element.textContent = message;
+            }
+        });
+    }
+
     async init() {
+        this.initI18n();
         await this.loadSettings();
         this.setupEventListeners();
     }
@@ -28,7 +40,7 @@ class PopupManager {
     async saveSettings() {
         try {
             await chrome.storage.sync.set({ shortcutSettings: this.settings });
-            this.showMessage('Settings Saved!');
+            this.showMessage(chrome.i18n.getMessage('settingsSaved'));
 
             // Notify new tab page to update
             chrome.tabs.query({ url: 'chrome://newtab/*' }, (tabs) => {
@@ -38,7 +50,7 @@ class PopupManager {
             });
         } catch (error) {
             console.error('Failed to save settings:', error);
-            this.showMessage('Save failed, please try again');
+            this.showMessage(chrome.i18n.getMessage('loadFailed'));
         }
     }
 

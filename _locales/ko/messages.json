@@ -1,0 +1,138 @@
+{
+  "extensionName": {
+    "message": "빈 페이지 바로가기",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "빈 탭 페이지에 최근 방문한 페이지의 바로가기를 표시합니다. 사용자 정의 형식과 수량을 지원합니다",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "빈 페이지 바로가기 설정",
+    "description": "Action button tooltip"
+  },
+  "pageTitle": {
+    "message": "새 탭",
+    "description": "Page title"
+  },
+  "searchPlaceholder": {
+    "message": "바로가기 검색...",
+    "description": "Search input placeholder"
+  },
+  "settingsButton": {
+    "message": "⚙️ 설정",
+    "description": "Settings button text"
+  },
+  "settingsButtonTitle": {
+    "message": "바로가기 형식 구성",
+    "description": "Settings button tooltip"
+  },
+  "shortcutSettings": {
+    "message": "바로가기 설정",
+    "description": "Settings panel title"
+  },
+  "displayCount": {
+    "message": "표시 수:",
+    "description": "Display count label"
+  },
+  "displayFormat": {
+    "message": "표시 형식:",
+    "description": "Display format label"
+  },
+  "showFavicons": {
+    "message": "웹사이트 아이콘 표시:",
+    "description": "Show favicons label"
+  },
+  "saveSettings": {
+    "message": "설정 저장",
+    "description": "Save button text"
+  },
+  "cancel": {
+    "message": "취소",
+    "description": "Cancel button text"
+  },
+  "loading": {
+    "message": "로딩 중...",
+    "description": "Loading message"
+  },
+  "noShortcuts": {
+    "message": "바로가기가 없습니다",
+    "description": "No shortcuts message"
+  },
+  "loadFailed": {
+    "message": "로딩에 실패했습니다. 페이지를 새로고침하여 다시 시도하십시오",
+    "description": "Error message"
+  },
+  "settingsSaved": {
+    "message": "설정이 저장되었습니다!",
+    "description": "Success message"
+  },
+  "historicalPages": {
+    "message": "개의 기록 페이지",
+    "description": "Page count tooltip"
+  },
+  "historyModalTitle": {
+    "message": "{domain}의 기록 페이지",
+    "description": "History modal title",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "closeModal": {
+    "message": "닫기",
+    "description": "Close modal button tooltip"
+  },
+  "noTitle": {
+    "message": "제목 없음",
+    "description": "No title placeholder"
+  },
+  "justNow": {
+    "message": "방금 전",
+    "description": "Time format"
+  },
+  "minutesAgo": {
+    "message": "{count}분 전",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "{count}시간 전",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "{count}일 전",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "gridLayout": {
+    "message": "그리드 레이아웃",
+    "description": "Grid layout option"
+  },
+  "listLayout": {
+    "message": "리스트 레이아웃",
+    "description": "List layout option"
+  },
+  "cardLayout": {
+    "message": "카드 레이아웃",
+    "description": "Card layout option"
+  }
+}

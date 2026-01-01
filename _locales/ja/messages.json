@@ -1,0 +1,138 @@
+{
+  "extensionName": {
+    "message": "空白ページのショートカット",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "空白タブページで最近アクセスしたページのショートカットを表示します。カスタム形式と数量をサポートします",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "空白ページショートカットの設定",
+    "description": "Action button tooltip"
+  },
+  "pageTitle": {
+    "message": "新しいタブ",
+    "description": "Page title"
+  },
+  "searchPlaceholder": {
+    "message": "ショートカットを検索...",
+    "description": "Search input placeholder"
+  },
+  "settingsButton": {
+    "message": "⚙️ 設定",
+    "description": "Settings button text"
+  },
+  "settingsButtonTitle": {
+    "message": "ショートカット形式を設定",
+    "description": "Settings button tooltip"
+  },
+  "shortcutSettings": {
+    "message": "ショートカット設定",
+    "description": "Settings panel title"
+  },
+  "displayCount": {
+    "message": "表示数:",
+    "description": "Display count label"
+  },
+  "displayFormat": {
+    "message": "表示形式:",
+    "description": "Display format label"
+  },
+  "showFavicons": {
+    "message": "ウェブサイトアイコンを表示:",
+    "description": "Show favicons label"
+  },
+  "saveSettings": {
+    "message": "設定を保存",
+    "description": "Save button text"
+  },
+  "cancel": {
+    "message": "キャンセル",
+    "description": "Cancel button text"
+  },
+  "loading": {
+    "message": "読み込み中...",
+    "description": "Loading message"
+  },
+  "noShortcuts": {
+    "message": "ショートカットがありません",
+    "description": "No shortcuts message"
+  },
+  "loadFailed": {
+    "message": "読み込みに失敗しました。ページを更新して再試行してください",
+    "description": "Error message"
+  },
+  "settingsSaved": {
+    "message": "設定を保存しました!",
+    "description": "Success message"
+  },
+  "historicalPages": {
+    "message": "件の履歴ページ",
+    "description": "Page count tooltip"
+  },
+  "historyModalTitle": {
+    "message": "{domain}の履歴ページ",
+    "description": "History modal title",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "closeModal": {
+    "message": "閉じる",
+    "description": "Close modal button tooltip"
+  },
+  "noTitle": {
+    "message": "タイトルなし",
+    "description": "No title placeholder"
+  },
+  "justNow": {
+    "message": "たった今",
+    "description": "Time format"
+  },
+  "minutesAgo": {
+    "message": "{count}分前",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "{count}時間前",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "{count}日前",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "gridLayout": {
+    "message": "グリッドレイアウト",
+    "description": "Grid layout option"
+  },
+  "listLayout": {
+    "message": "リストレイアウト",
+    "description": "List layout option"
+  },
+  "cardLayout": {
+    "message": "カードレイアウト",
+    "description": "Card layout option"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "extensionName": {
+    "message": "Accesos directos de página en blanco",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Muestra accesos directos de páginas visitadas recientemente en la página de la pestaña en blanco, admite formato y cantidad personalizados",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "Configuración de accesos directos de página en blanco",
+    "description": "Action button tooltip"
+  },
+  "pageTitle": {
+    "message": "Nueva pestaña",
+    "description": "Page title"
+  },
+  "searchPlaceholder": {
+    "message": "Buscar accesos directos...",
+    "description": "Search input placeholder"
+  },
+  "settingsButton": {
+    "message": "⚙️ Configuración",
+    "description": "Settings button text"
+  },
+  "settingsButtonTitle": {
+    "message": "Configurar formato de accesos directos",
+    "description": "Settings button tooltip"
+  },
+  "shortcutSettings": {
+    "message": "Configuración de accesos directos",
+    "description": "Settings panel title"
+  },
+  "displayCount": {
+    "message": "Cantidad a mostrar:",
+    "description": "Display count label"
+  },
+  "displayFormat": {
+    "message": "Formato de visualización:",
+    "description": "Display format label"
+  },
+  "showFavicons": {
+    "message": "Mostrar iconos del sitio web:",
+    "description": "Show favicons label"
+  },
+  "saveSettings": {
+    "message": "Guardar configuración",
+    "description": "Save button text"
+  },
+  "cancel": {
+    "message": "Cancelar",
+    "description": "Cancel button text"
+  },
+  "loading": {
+    "message": "Cargando...",
+    "description": "Loading message"
+  },
+  "noShortcuts": {
+    "message": "No hay accesos directos disponibles",
+    "description": "No shortcuts message"
+  },
+  "loadFailed": {
+    "message": "Error al cargar, por favor actualice la página y vuelva a intentar",
+    "description": "Error message"
+  },
+  "settingsSaved": {
+    "message": "¡Configuración guardada!",
+    "description": "Success message"
+  },
+  "historicalPages": {
+    "message": "páginas históricas",
+    "description": "Page count tooltip"
+  },
+  "historyModalTitle": {
+    "message": "Páginas históricas de {domain}",
+    "description": "History modal title",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "closeModal": {
+    "message": "Cerrar",
+    "description": "Close modal button tooltip"
+  },
+  "noTitle": {
+    "message": "Sin título",
+    "description": "No title placeholder"
+  },
+  "justNow": {
+    "message": "Ahora mismo",
+    "description": "Time format"
+  },
+  "minutesAgo": {
+    "message": "hace {count} minutos",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "hace {count} horas",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "hace {count} días",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "gridLayout": {
+    "message": "Disposición de cuadrícula",
+    "description": "Grid layout option"
+  },
+  "listLayout": {
+    "message": "Disposición de lista",
+    "description": "List layout option"
+  },
+  "cardLayout": {
+    "message": "Disposición de tarjetas",
+    "description": "Card layout option"
+  }
+}

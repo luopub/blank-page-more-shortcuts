@@ -1,0 +1,138 @@
+{
+  "extensionName": {
+    "message": "空白页快捷方式",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "在空白标签页上显示最近访问页面的快捷方式，支持自定义格式和数量",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "空白页快捷方式设置",
+    "description": "Action button tooltip"
+  },
+  "pageTitle": {
+    "message": "新标签页",
+    "description": "Page title"
+  },
+  "searchPlaceholder": {
+    "message": "搜索快捷方式...",
+    "description": "Search input placeholder"
+  },
+  "settingsButton": {
+    "message": "⚙️ 设置",
+    "description": "Settings button text"
+  },
+  "settingsButtonTitle": {
+    "message": "配置快捷方式格式",
+    "description": "Settings button tooltip"
+  },
+  "shortcutSettings": {
+    "message": "快捷方式设置",
+    "description": "Settings panel title"
+  },
+  "displayCount": {
+    "message": "显示数量:",
+    "description": "Display count label"
+  },
+  "displayFormat": {
+    "message": "显示格式:",
+    "description": "Display format label"
+  },
+  "showFavicons": {
+    "message": "显示网站图标:",
+    "description": "Show favicons label"
+  },
+  "saveSettings": {
+    "message": "保存设置",
+    "description": "Save button text"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "Cancel button text"
+  },
+  "loading": {
+    "message": "加载中...",
+    "description": "Loading message"
+  },
+  "noShortcuts": {
+    "message": "暂无快捷方式",
+    "description": "No shortcuts message"
+  },
+  "loadFailed": {
+    "message": "加载失败，请刷新页面重试",
+    "description": "Error message"
+  },
+  "settingsSaved": {
+    "message": "设置已保存!",
+    "description": "Success message"
+  },
+  "historicalPages": {
+    "message": "个历史页面",
+    "description": "Page count tooltip"
+  },
+  "historyModalTitle": {
+    "message": "{domain} 的历史页面",
+    "description": "History modal title",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "closeModal": {
+    "message": "关闭",
+    "description": "Close modal button tooltip"
+  },
+  "noTitle": {
+    "message": "无标题",
+    "description": "No title placeholder"
+  },
+  "justNow": {
+    "message": "刚刚",
+    "description": "Time format"
+  },
+  "minutesAgo": {
+    "message": "{count} 分钟前",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "{count} 小时前",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "{count} 天前",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "gridLayout": {
+    "message": "网格布局",
+    "description": "Grid layout option"
+  },
+  "listLayout": {
+    "message": "列表布局",
+    "description": "List layout option"
+  },
+  "cardLayout": {
+    "message": "卡片布局",
+    "description": "Card layout option"
+  }
+}

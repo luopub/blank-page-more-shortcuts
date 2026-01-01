@@ -10,7 +10,37 @@ class NewTabManager {
         this.init();
     }
 
+    initI18n() {
+        // Translate all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const message = chrome.i18n.getMessage(key);
+            if (message) {
+                element.textContent = message;
+            }
+        });
+
+        // Translate placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            const message = chrome.i18n.getMessage(key);
+            if (message) {
+                element.placeholder = message;
+            }
+        });
+
+        // Translate titles
+        document.querySelectorAll('[data-i18n-title]').forEach(element => {
+            const key = element.getAttribute('data-i18n-title');
+            const message = chrome.i18n.getMessage(key);
+            if (message) {
+                element.title = message;
+            }
+        });
+    }
+
     async init() {
+        this.initI18n();
         await this.loadSettings();
         this.setupEventListeners();
         await this.loadShortcuts();
@@ -66,7 +96,7 @@ class NewTabManager {
             
             await this.saveSettings();
             settingsPanel.classList.add('hidden');
-            this.showMessage('Settings Saved!');
+            this.showMessage(chrome.i18n.getMessage('settingsSaved'));
         });
 
         cancelSettingsBtn.addEventListener('click', () => {
@@ -112,7 +142,7 @@ class NewTabManager {
 
     async loadShortcuts() {
         const container = document.getElementById('shortcutsContainer');
-        container.innerHTML = '<div class="loading">Loading...</div>';
+        container.innerHTML = `<div class="loading">${chrome.i18n.getMessage('loading')}</div>`;
 
         try {
             const historyItems = await this.getRecentHistory();
@@ -123,7 +153,7 @@ class NewTabManager {
             this.renderShortcuts(shortcuts);
         } catch (error) {
             console.error('Failed to load shortcuts:', error);
-            container.innerHTML = '<div class="error">Loading failed, please refresh page and try again</div>';
+            container.innerHTML = `<div class="error">${chrome.i18n.getMessage('loadFailed')}</div>`;
         }
     }
 
@@ -236,7 +266,7 @@ class NewTabManager {
         const container = document.getElementById('shortcutsContainer');
 
         if (shortcuts.length === 0) {
-            container.innerHTML = '<div class="no-shortcuts">No shortcuts available</div>';
+            container.innerHTML = `<div class="no-shortcuts">${chrome.i18n.getMessage('noShortcuts')}</div>`;
             return;
         }
 
@@ -367,7 +397,7 @@ class NewTabManager {
                         <div class="shortcut-title" title="${item.title}">${item.title}</div>
                         <div class="shortcut-url" title="${item.url}">${new URL(item.url).hostname}</div>
                     </div>
-                    <div class="page-count-badge" title="${item.pageCount} historical pages">${item.pageCount}</div>
+                    <div class="page-count-badge" title="${item.pageCount} ${chrome.i18n.getMessage('historicalPages')}">${item.pageCount}</div>
                 </div>
             `;
         }
@@ -426,7 +456,7 @@ class NewTabManager {
                     <div class="shortcut-title" title="${item.title}">${item.title}</div>
                     <div class="shortcut-url" title="${item.url}">${domain}</div>
                 </div>
-                <div class="page-count-badge" title="${item.pageCount} historical pages">${item.pageCount}</div>
+                <div class="page-count-badge" title="${item.pageCount} ${chrome.i18n.getMessage('historicalPages')}">${item.pageCount}</div>
             </div>
         `;
     }
@@ -504,8 +534,8 @@ class NewTabManager {
             <div id="historyModal" class="history-modal">
                 <div class="history-modal-content">
                     <div class="history-modal-header">
-                        <h3 class="history-modal-title">Historical pages of ${new URL(shortcutData.url).hostname}</h3>
-                        <button class="close-modal-btn" title="Close">×</button>
+                        <h3 class="history-modal-title">${chrome.i18n.getMessage('historyModalTitle', new URL(shortcutData.url).hostname)}</h3>
+                        <button class="close-modal-btn" title="${chrome.i18n.getMessage('closeModal')}">×</button>
                     </div>
                     <div class="history-modal-body">
                         <div class="history-pages-list">
@@ -513,7 +543,7 @@ class NewTabManager {
                                 <a href="${page.url}" class="history-page-item" title="${page.title}">
                                     <div class="history-page-index">${index + 1}</div>
                                     <div class="history-page-info">
-                                        <div class="history-page-title">${page.title || 'No title'}</div>
+                                        <div class="history-page-title">${page.title || chrome.i18n.getMessage('noTitle')}</div>
                                         <div class="history-page-url">${new URL(page.url).pathname}</div>
                                     </div>
                                     <div class="history-page-time">${this.formatTime(page.lastVisitTime)}</div>
@@ -548,19 +578,19 @@ class NewTabManager {
 
         // Less than 1 minute
         if (diff < 60000) {
-            return 'Just now';
+            return chrome.i18n.getMessage('justNow');
         }
         // Less than 1 hour
         if (diff < 3600000) {
-            return `${Math.floor(diff / 60000)} minutes ago`;
+            return chrome.i18n.getMessage('minutesAgo', Math.floor(diff / 60000).toString());
         }
         // Less than 1 day
         if (diff < 86400000) {
-            return `${Math.floor(diff / 3600000)} hours ago`;
+            return chrome.i18n.getMessage('hoursAgo', Math.floor(diff / 3600000).toString());
         }
         // Less than 7 days
         if (diff < 604800000) {
-            return `${Math.floor(diff / 86400000)} days ago`;
+            return chrome.i18n.getMessage('daysAgo', Math.floor(diff / 86400000).toString());
         }
         // Format date
         return `${date.getMonth() + 1}/${date.getDate()}`;

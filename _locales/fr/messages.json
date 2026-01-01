@@ -1,0 +1,138 @@
+{
+  "extensionName": {
+    "message": "Raccourcis de page vierge",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Affiche les raccourcis des pages récemment visitées sur la page de l'onglet vide, prend en charge le format et la quantité personnalisés",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "Paramètres des raccourcis de page vierge",
+    "description": "Action button tooltip"
+  },
+  "pageTitle": {
+    "message": "Nouvel onglet",
+    "description": "Page title"
+  },
+  "searchPlaceholder": {
+    "message": "Rechercher des raccourcis...",
+    "description": "Search input placeholder"
+  },
+  "settingsButton": {
+    "message": "⚙️ Paramètres",
+    "description": "Settings button text"
+  },
+  "settingsButtonTitle": {
+    "message": "Configurer le format des raccourcis",
+    "description": "Settings button tooltip"
+  },
+  "shortcutSettings": {
+    "message": "Paramètres des raccourcis",
+    "description": "Settings panel title"
+  },
+  "displayCount": {
+    "message": "Nombre à afficher:",
+    "description": "Display count label"
+  },
+  "displayFormat": {
+    "message": "Format d'affichage:",
+    "description": "Display format label"
+  },
+  "showFavicons": {
+    "message": "Afficher les icônes du site:",
+    "description": "Show favicons label"
+  },
+  "saveSettings": {
+    "message": "Enregistrer les paramètres",
+    "description": "Save button text"
+  },
+  "cancel": {
+    "message": "Annuler",
+    "description": "Cancel button text"
+  },
+  "loading": {
+    "message": "Chargement...",
+    "description": "Loading message"
+  },
+  "noShortcuts": {
+    "message": "Aucun raccourci disponible",
+    "description": "No shortcuts message"
+  },
+  "loadFailed": {
+    "message": "Échec du chargement, veuillez actualiser la page et réessayer",
+    "description": "Error message"
+  },
+  "settingsSaved": {
+    "message": "Paramètres enregistrés!",
+    "description": "Success message"
+  },
+  "historicalPages": {
+    "message": "pages historiques",
+    "description": "Page count tooltip"
+  },
+  "historyModalTitle": {
+    "message": "Pages historiques de {domain}",
+    "description": "History modal title",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "closeModal": {
+    "message": "Fermer",
+    "description": "Close modal button tooltip"
+  },
+  "noTitle": {
+    "message": "Sans titre",
+    "description": "No title placeholder"
+  },
+  "justNow": {
+    "message": "À l'instant",
+    "description": "Time format"
+  },
+  "minutesAgo": {
+    "message": "Il y a {count} minutes",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "Il y a {count} heures",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "Il y a {count} jours",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "gridLayout": {
+    "message": "Mise en page en grille",
+    "description": "Grid layout option"
+  },
+  "listLayout": {
+    "message": "Mise en page en liste",
+    "description": "List layout option"
+  },
+  "cardLayout": {
+    "message": "Mise en page en carte",
+    "description": "Card layout option"
+  }
+}

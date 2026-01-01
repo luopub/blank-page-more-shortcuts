@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shortcut Settings</title>
+    <title data-i18n="shortcutSettings">Shortcut Settings</title>
     <link rel="stylesheet" href="styles/popup.css">
 </head>
 <body>
     <div class="popup-container">
-        <h3>Blank Page Shortcuts Settings</h3>
+        <h3 data-i18n="actionTitle">Blank Page Shortcuts Settings</h3>
         <div class="setting-group">
-            <label for="popupDisplayCount">Display Count:</label>
+            <label for="popupDisplayCount" data-i18n="displayCount">Display Count:</label>
             <select id="popupDisplayCount">
                 <option value="4">4</option>
                 <option value="6">6</option>
@@ -20,19 +20,19 @@
             </select>
         </div>
         <div class="setting-group">
-            <label for="popupDisplayFormat">Display Format:</label>
+            <label for="popupDisplayFormat" data-i18n="displayFormat">Display Format:</label>
             <select id="popupDisplayFormat">
-                <option value="grid">Grid Layout</option>
-                <option value="list">List Layout</option>
-                <option value="card">Card Layout</option>
+                <option value="grid" data-i18n="gridLayout">Grid Layout</option>
+                <option value="list" data-i18n="listLayout">List Layout</option>
+                <option value="card" data-i18n="cardLayout">Card Layout</option>
             </select>
         </div>
         <div class="setting-group">
-            <label for="popupShowFavicons">Show Website Icons:</label>
+            <label for="popupShowFavicons" data-i18n="showFavicons">Show Website Icons:</label>
             <input type="checkbox" id="popupShowFavicons" checked>
         </div>
-        <button id="savePopupSettings" class="save-btn">Save Settings</button>
-        <div id="saveMessage" class="message hidden">Settings Saved!</div>
+        <button id="savePopupSettings" class="save-btn" data-i18n="saveSettings">Save Settings</button>
+        <div id="saveMessage" class="message hidden" data-i18n="settingsSaved">Settings Saved!</div>
     </div>
     <script src="scripts/popup.js"></script>
 </body>

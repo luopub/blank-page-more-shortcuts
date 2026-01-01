@@ -1,0 +1,138 @@
+{
+  "extensionName": {
+    "message": "Blank Page Shortcuts",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Display shortcuts of recently visited pages on the blank tab page, supports custom format and quantity",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "Blank Page Shortcuts Settings",
+    "description": "Action button tooltip"
+  },
+  "pageTitle": {
+    "message": "New Tab",
+    "description": "Page title"
+  },
+  "searchPlaceholder": {
+    "message": "Search shortcuts...",
+    "description": "Search input placeholder"
+  },
+  "settingsButton": {
+    "message": "⚙️ Settings",
+    "description": "Settings button text"
+  },
+  "settingsButtonTitle": {
+    "message": "Configure shortcut format",
+    "description": "Settings button tooltip"
+  },
+  "shortcutSettings": {
+    "message": "Shortcut Settings",
+    "description": "Settings panel title"
+  },
+  "displayCount": {
+    "message": "Display Count:",
+    "description": "Display count label"
+  },
+  "displayFormat": {
+    "message": "Display Format:",
+    "description": "Display format label"
+  },
+  "showFavicons": {
+    "message": "Show Website Icons:",
+    "description": "Show favicons label"
+  },
+  "saveSettings": {
+    "message": "Save Settings",
+    "description": "Save button text"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Cancel button text"
+  },
+  "loading": {
+    "message": "Loading...",
+    "description": "Loading message"
+  },
+  "noShortcuts": {
+    "message": "No shortcuts available",
+    "description": "No shortcuts message"
+  },
+  "loadFailed": {
+    "message": "Loading failed, please refresh page and try again",
+    "description": "Error message"
+  },
+  "settingsSaved": {
+    "message": "Settings Saved!",
+    "description": "Success message"
+  },
+  "historicalPages": {
+    "message": "historical pages",
+    "description": "Page count tooltip"
+  },
+  "historyModalTitle": {
+    "message": "Historical pages of {domain}",
+    "description": "History modal title",
+    "placeholders": {
+      "domain": {
+        "content": "$1",
+        "example": "example.com"
+      }
+    }
+  },
+  "closeModal": {
+    "message": "Close",
+    "description": "Close modal button tooltip"
+  },
+  "noTitle": {
+    "message": "No title",
+    "description": "No title placeholder"
+  },
+  "justNow": {
+    "message": "Just now",
+    "description": "Time format"
+  },
+  "minutesAgo": {
+    "message": "{count} minutes ago",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "{count} hours ago",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "{count} days ago",
+    "description": "Time format",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "gridLayout": {
+    "message": "Grid Layout",
+    "description": "Grid layout option"
+  },
+  "listLayout": {
+    "message": "List Layout",
+    "description": "List layout option"
+  },
+  "cardLayout": {
+    "message": "Card Layout",
+    "description": "Card layout option"
+  }
+}

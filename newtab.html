@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Tab</title>
+    <title data-i18n="pageTitle">New Tab</title>
     <link rel="stylesheet" href="styles/newtab.css">
 </head>
 <body>
     <div class="container">
         <!-- Settings button and search box -->
         <div class="settings-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search shortcuts...">
-            <button id="settingsBtn" class="settings-btn" title="Configure shortcut format">
-                ⚙️ Settings
+            <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Search shortcuts...">
+            <button id="settingsBtn" class="settings-btn" data-i18n-title="settingsButtonTitle" title="Configure shortcut format">
+                ⚙️ <span data-i18n="settingsButton">Settings</span>
             </button>
         </div>
 
         <!-- Settings panel -->
         <div id="settingsPanel" class="settings-panel hidden">
             <div class="panel-content">
-                <h3>Shortcut Settings</h3>
+                <h3 data-i18n="shortcutSettings">Shortcut Settings</h3>
                 <div class="setting-group">
-                    <label for="displayCount">Display Count:</label>
+                    <label for="displayCount" data-i18n="displayCount">Display Count:</label>
                     <select id="displayCount">
                         <option value="10">10</option>
                         <option value="20">20</option>
@@ -31,27 +31,27 @@
                     </select>
                 </div>
                 <div class="setting-group">
-                    <label for="displayFormat">Display Format:</label>
+                    <label for="displayFormat" data-i18n="displayFormat">Display Format:</label>
                     <select id="displayFormat">
-                        <option value="grid">Grid Layout</option>
-                        <option value="list">List Layout</option>
-                        <option value="card">Card Layout</option>
+                        <option value="grid" data-i18n="gridLayout">Grid Layout</option>
+                        <option value="list" data-i18n="listLayout">List Layout</option>
+                        <option value="card" data-i18n="cardLayout">Card Layout</option>
                     </select>
                 </div>
                 <div class="setting-group">
-                    <label for="showFavicons">Show Website Icons:</label>
+                    <label for="showFavicons" data-i18n="showFavicons">Show Website Icons:</label>
                     <input type="checkbox" id="showFavicons" checked>
                 </div>
                 <div class="setting-actions">
-                    <button id="saveSettings" class="save-btn">Save Settings</button>
-                    <button id="cancelSettings" class="cancel-btn">Cancel</button>
+                    <button id="saveSettings" class="save-btn" data-i18n="saveSettings">Save Settings</button>
+                    <button id="cancelSettings" class="cancel-btn" data-i18n="cancel">Cancel</button>
                 </div>
             </div>
         </div>
 
         <!-- Shortcuts container -->
         <div id="shortcutsContainer" class="shortcuts-container">
-            <div class="loading">Loading...</div>
+            <div class="loading" data-i18n="loading">Loading...</div>
         </div>
     </div>
 
